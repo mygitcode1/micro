@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Microservices App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Welcome to My Microservices App</h1>
+
+  <div class="service" id="catalog">
+    <h2>Catalog</h2>
+    <button onclick="fetchCatalog()">Load Catalog</button>
+    <pre id="catalogData"></pre>
+  </div>
+
+  <div class="service" id="inventory">
+    <h2>Inventory</h2>
+    <button onclick="fetchInventory()">Load Inventory</button>
+    <pre id="inventoryData"></pre>
+  </div>
+
+  <div class="service" id="order">
+    <h2>Orders</h2>
+    <button onclick="fetchOrders()">Load Orders</button>
+    <pre id="orderData"></pre>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
