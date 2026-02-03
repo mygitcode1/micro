@@ -1,3 +1,5 @@
+### NOTE: THIS FILE WORKS COMMON FOR ALL SERVICES/COMPONENTS **** JUST COPY PASTE TO PIPELINE JOB #######
+
 pipeline {
     agent any
 
