@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'java21'
+        maven 'maven3'
+    }
+
+    environment {
+        JAVA_HOME = tool 'java21'
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+        SERVICE_NAME = "${env.JOB_NAME.tokenize('/').last()}"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                cleanWs()
+                sh '''
+                  git clone --no-checkout https://github.com/mygitcode1/micro.git
+                  cd micro
+                  git sparse-checkout init --cone
+                  git sparse-checkout set ${SERVICE_NAME}
+                  git checkout main
+                '''
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                  cd micro/${SERVICE_NAME}
+                  mvn clean package
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            archiveArtifacts artifacts: "micro/${SERVICE_NAME}/target/*.jar", fingerprint: true
+        }
+    }
+}
