@@ -3,6 +3,7 @@
 
   <groupId>com.example</groupId>
   <artifactId>web</artifactId>
+  <version>2026</version>
   <packaging>jar</packaging>
 
   <parent>
