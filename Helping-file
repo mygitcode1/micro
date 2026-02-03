@@ -1,0 +1,60 @@
+############ Jenkins SERVER SETUP in ubuntu24 Machine 
+sudo apt update
+sudo apt install fontconfig openjdk-21-jre
+sudo apt install openjdk-21-jdk -y
+java -version
+
+sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+sudo apt update
+sudo apt install jenkins
+
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+sudo systemctl status jenkins
+
+
+###### Folder structure to run a jar ###################################
+
+/home/ubuntu/apps/inventory/inventory.jar
+                application.properties
+
+/home/ubuntu/apps/order.jar
+            application.properties
+
+/home/ubuntu/apps/gateway.jar
+                          application.properties
+
+/home/ubuntu/apps/web/web.jar
+                          application.properties
+
+################### Artifact Download FROM Jenkins Server #########################
+
+curl -u admin:11e045f34f1141a7f4c98e4e05459c4448 -O http://44.197.181.168:8080/job/catalog/4/artifact/target/catalog-1.0.jar
+NOTE: Generate TOKEN in JENKINS server to connect and download artifact 
+
+############################### start.sh ##################################
+#!/bin/bash
+set -e
+
+APP_HOME="/home/ubuntu/apps/catalog"
+JAR_NAME="catalog-1.0.jar"
+JAVA_BIN="/usr/lib/jvm/java-21-openjdk-amd64/bin/java"
+
+cd "$APP_HOME"
+
+echo "Starting  $JAR_NAME service..."
+
+nohup "$JAVA_BIN" \
+  -Xms256m -Xmx512m \
+  -jar "$JAR_NAME" \
+  --spring.config.location=file:$APP_HOME/application.properties \
+  > catalog.log 2>&1 &
+
+################## Access SERVICE FROM BROWSER #######################
+http://<44.197.181.168>:<service-port>
+
